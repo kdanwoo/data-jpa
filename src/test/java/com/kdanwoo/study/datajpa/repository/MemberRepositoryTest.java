@@ -12,8 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -155,4 +157,30 @@ class MemberRepositoryTest {
             System.out.println("member = " + member);
         }
     }
+
+    @Test
+    public void returnType(){
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("BBB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        //아래 조회결과가 null이여도 빈 컬렉션을 반환해준다. null이 아님 (절대 null이 아니라는 보장)
+        List<Member> aaa = memberRepository.findListByUsername("AAA");
+        for (Member member : aaa) {
+            System.out.println("member = " + member);
+        }
+
+        //단건일 경우! 조회결과가 null이 된다.(없는 값 조회시)
+        /**
+         * Query.getSingleResult() 메서드를 호출한다.
+         * 이 메서드를 호출했을 때 조회 결과가 없으면 javax.persistence.NoResultException 예외가 발생하는데 개발자 입장에서 다루기가 상당히 불편하다.
+         * 스프링 데이터 JPA는 단건을 조회할 때 이 예외가 발생하면 예외를 무시하고 대신에 null 을 반환한다.
+         * */
+        Member aaa1 = memberRepository.findMemberByUsername("AAA");
+
+
+        Optional<Member> aaa2 = memberRepository.findOptionalByUsername("AAA");
+    }
+
 }
