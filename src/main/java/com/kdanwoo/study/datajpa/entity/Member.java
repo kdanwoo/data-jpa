@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NamedQuery(
         name = "Member.findByUsername",
         query = "select m from Member m where m.username = :username"
-)
+) //네임드쿼리의 가장큰 장점,, 컴파일 과정에서 잡힘.
 public class Member {
 
     @Id
