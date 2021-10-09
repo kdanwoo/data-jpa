@@ -20,6 +20,8 @@ public class MemberJpaRepositoryTest {
     @Test
     public void testMember(){
 
+        //같은 Transaction이라면 영속성 컨텍스트의 동일성을 보장한다.
+        //1차캐시라고 불리는 기능이고, 다른 트랜잭션이라면 동일성을 보장하지 못한다.
         Member member = new Member("memberA");
         Member savedMember = memberJpaRepository.save(member);
 
