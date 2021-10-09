@@ -14,4 +14,4 @@ spring:
 
 logging.level:
   org.hibernate.SQL: debug
-#  org.hibernate.type: trac
+  # org.hibernate.type: trac
