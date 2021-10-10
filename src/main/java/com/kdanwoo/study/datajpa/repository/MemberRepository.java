@@ -41,5 +41,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findMemberByUsername(String username);
     Optional<Member> findOptionalByUsername(String username);
 
+    //쿼리가 복잡해지면 countQuery를 분리해야한다
+    @Query(value = "select m from Member m left join m.team t", countQuery = "select count(m.username) from Member m")
     Page<Member> findByAge(int age, Pageable pageable);
 }
