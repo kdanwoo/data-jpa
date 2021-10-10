@@ -208,7 +208,8 @@ class MemberRepositoryTest {
         //when
         Page<Member> page = memberRepository.findByAge(age,pageRequeut);
 
-        //then
+        //페이지를 유지하면서 dto로 전달하는법
+        Page<MemberDto> toMap = page.map(member -> new MemberDto(member.getId(), member.getUsername(), null));
 
         //paging해서 가져온 정보
         List<Member> content = page.getContent();
