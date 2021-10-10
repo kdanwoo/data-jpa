@@ -47,7 +47,13 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Page<Member> findByAge(int age, Pageable pageable);
 
     //spring data jpa의 bulkupdate
-    @Modifying // excuteUpdate를 실행하는것.
+    // 벌크 연산은 영속성 컨텍스트에 반영하지 않고 벌크연산을 디비에 바로 때려버리는 상황이 발생함
+    // 벌크성 쿼리를 실행하고 나서 영속성 컨텍스트 초기화
+    //참고: 벌크 연산은 영속성 컨텍스트를 무시하고 실행하기 때문에, 영속성 컨텍스트에 있는 엔티티의 상태와 DB에 엔티티 상태가 달라질 수 있다.
+    //> 권장하는 방안
+    //> 1. 영속성 컨텍스트에 엔티티가 없는 상태에서 벌크 연산을 먼저 실행한다.
+    //> 2. 부득이하게 영속성 컨텍스트에 엔티티가 있으면 벌크 연산 직후 영속성 컨텍스트를 초기화 한다.
+    @Modifying(clearAutomatically = true) // excuteUpdate를 실행하는것.
     @Query("update Member m set m.age = m.age + 1 where m.age >= :age")
     int bulkAgePlus(@Param("age") int age);
 
