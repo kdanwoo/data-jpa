@@ -6,6 +6,9 @@ import com.kdanwoo.study.datajpa.entity.Team;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
 import static org.junit.jupiter.api.Assertions.*;
@@ -181,6 +185,42 @@ class MemberRepositoryTest {
 
 
         Optional<Member> aaa2 = memberRepository.findOptionalByUsername("AAA");
+    }
+
+    @Test
+    public void paging(){
+
+        //given
+        memberRepository.save(new Member("member1",10));
+        memberRepository.save(new Member("member2",10));
+        memberRepository.save(new Member("member3",10));
+        memberRepository.save(new Member("member4",10));
+        memberRepository.save(new Member("member5",10));
+        memberRepository.save(new Member("member6",10));
+        memberRepository.save(new Member("member7",10));
+        memberRepository.save(new Member("member8",10));
+        memberRepository.save(new Member("member9",10));
+
+        int age = 10;
+        //spring data jpa는 page 인덱스가 0부터 시작함 , 뒤에는 소팅조건들을 넣는것!
+        PageRequest pageRequeut = PageRequest.of(0, 3, Sort.Direction.DESC, "username");
+
+        //when
+        Page<Member> page = memberRepository.findByAge(age,pageRequeut);
+
+        //then
+
+        //paging해서 가져온 정보
+        List<Member> content = page.getContent();
+        long totalElements = page.getTotalElements();
+
+        assertThat(content.size()).isEqualTo(3);
+        assertThat(page.getTotalElements()).isEqualTo(9);
+        assertThat(page.getNumber()).isEqualTo(0);
+        assertThat(page.getTotalPages()).isEqualTo(3);
+        assertThat(page.isFirst()).isTrue();
+        assertThat(page.hasNext()).isTrue();
+
     }
 
 }
