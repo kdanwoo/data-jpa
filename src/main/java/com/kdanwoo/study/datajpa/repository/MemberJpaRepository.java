@@ -52,4 +52,19 @@ public class MemberJpaRepository {
             return em.createNamedQuery("Member.findByUsername", Member.class)
                     .setParameter("username",username).getResultList();
     }
+
+    //기존의 페이징 쿼리.
+    public List<Member> findByPage(int age, int offset, int limit){
+            return em.createQuery("select m from Member m where m.age = :age order by m.username desc")
+                    .setParameter("age",age)
+                    .setFirstResult(offset)
+                    .setMaxResults(limit)
+                    .getResultList();
+    }
+
+    //total Count 필요
+    public long totalCount(int age){
+        return em.createQuery("select count(m) from Member m where m.age = :age", Long.class)
+                .setParameter("age",age).getSingleResult();
+    }
 }
