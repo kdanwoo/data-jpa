@@ -35,7 +35,7 @@ public class MemberController {
         //엔티티를 API로 노출하면 다양한 문제가 발생
         //Page는 map() 을 지원해서 내부 데이터를 다른 것으로 변경할 수 있다.
         Page<Member> page = memberRepository.findAll(pageable);
-        return page.map(member -> new MemberDto(member.getId(), member.getUsername(), null));
+        return page.map(MemberDto::new); //메서드 레퍼런스!
     }
 
     @PostConstruct

@@ -1,5 +1,6 @@
 package com.kdanwoo.study.datajpa.dto;
 
+import com.kdanwoo.study.datajpa.entity.Member;
 import lombok.Data;
 
 @Data
@@ -15,4 +16,8 @@ public class MemberDto {
         this.teamName = teamName;
     }
 
+    public MemberDto(Member member){
+        this.id = member.getId();
+        this.username = member.getUsername();
+    }
 }
