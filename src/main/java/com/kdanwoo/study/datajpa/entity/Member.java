@@ -12,7 +12,7 @@ import javax.persistence.*;
         name = "Member. ",
         query = "select m from Member m where m.username = :username"
 ) //네임드쿼리의 가장큰 장점,, 컴파일 과정에서 잡힘.
-public class Member {
+public class Member extends JpaBaseEntity {
 
     @Id
     @GeneratedValue
