@@ -277,4 +277,13 @@ class MemberRepositoryTest {
 
 
     }
+
+    @Test
+    public void callCustom(){
+        List<Member> result = memberRepository.findMemberCustom();
+
+        for (Member member : result) {
+            System.out.println("member = " + member);
+        }
+    }
 }

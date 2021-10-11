@@ -11,8 +11,11 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
 
     private final EntityManager em;
 
+    //순수 Jpa
     @Override
     public List<Member> findMemberCustom() {
-        return null;
+        return em.createQuery("select m from Member m").getResultList();
     }
+
+
 }
